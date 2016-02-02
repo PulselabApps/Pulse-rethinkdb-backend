@@ -1,0 +1,10 @@
+2016-02-02T01:23:10.173683000 0.302064s notice: Recursively removing directory /Users/maxmarze/sandbox/pulse-rethinkdb-backend/rethinkdb_data/tmp
+2016-02-02T01:23:10.175356000 0.303741s notice: Initializing directory /Users/maxmarze/sandbox/pulse-rethinkdb-backend/rethinkdb_data
+2016-02-02T01:23:10.175449000 0.303829s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/maxmarze/sandbox/pulse-rethinkdb-backend/rethinkdb_data' did not already exist or is empty.)
+2016-02-02T01:23:10.175489000 0.303869s notice: Running rethinkdb 2.2.3-1 (CLANG 7.0.2 (clang-700.1.81))...
+2016-02-02T01:23:10.184172000 0.312554s notice: Running on Darwin 15.0.0 x86_64
+2016-02-02T01:23:10.184221000 0.312601s notice: Loading data from directory /Users/maxmarze/sandbox/pulse-rethinkdb-backend/rethinkdb_data
+2016-02-02T01:23:10.265476000 0.393857s info: Automatically using cache size of 100 MB
+2016-02-02T01:23:10.265548000 0.393928s warn: Cache size does not leave much memory for server and query overhead (available memory: 1070 MB).
+2016-02-02T01:23:10.265553000 0.393933s warn: Cache size is very low and may impact performance.
+2016-02-02T01:23:10.266863000 0.395243s error: TCP socket creation failed for port 29015: Address already in use.
