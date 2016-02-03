@@ -1,3 +1,4 @@
+require('dotenv').config();
 import http from 'http';
 import express from 'express';
 import socketio from 'socket.io';
@@ -54,7 +55,7 @@ db( λ => {
     });
   });
 
-	app.server.listen(process.env.PORT || 8080);
+	app.server.listen(process.env.PORT || 8081);
 
 	console.log(`Started on port ${app.server.address().port}`);
 

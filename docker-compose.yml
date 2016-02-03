@@ -1,0 +1,14 @@
+web:
+  build: ./
+  volumes:
+    - "./:/src"
+  ports:
+    - "80:8081"
+  links:
+    - rethink
+rethink:
+  image: rethinkdb:latest
+  ports:
+    - "8080"
+    - "127.0.0.1:28015:28015"
+    - "29015"
