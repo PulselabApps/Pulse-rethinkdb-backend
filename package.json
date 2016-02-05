@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jason Miller <jason@developit.ca>",
+  "author": "Max Marze",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "babel": "^5.8.21",
