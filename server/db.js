@@ -1,9 +1,14 @@
 import Thinky from 'thinky';
+import url from 'url';
+
+var connectionString = process.env.RETHINKDB_URL || 'http://localhost:28015';
+var parser = url.parse(connectionString);
+console.log(parser.hostname);
+console.log(parser.port);
 
 export const thinky = Thinky({
-  // host: process.env.DB_HOST,
-  // port: process.env.DB_PORT,
-  host: '172.17.0.2',
+  host: parser.hostname,
+  port: parser.port,
   db: 'pulse_beta'
 });
 
