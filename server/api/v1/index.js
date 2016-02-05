@@ -1,20 +1,20 @@
 import { Router } from 'express';
+import expressListRoutes from 'express-list-routes';
 import Institution from '../../models/Institution';
 import PulseClass from '../../models/PulseClass';
 import Teacher from '../../models/Teacher';
 import Student from '../../models/Student';
 import { thinky } from '../../db';
-
 export default function() {
   var v1 = Router();
 
   var r = thinky.r;
 
-  v1.get('/', (req, res) => {
-    res.json({
-      version: '1.0'
-    });
-  });
+  // v1.get('/', (req, res) => {
+  //   res.json({
+  //     version: '1.0'
+  //   });
+  // });
 
   v1.get('/institutions', (req, res) => {
     Institution.run().then( result => {
@@ -69,6 +69,13 @@ export default function() {
   v1.get('/classes', (req, res) => {
     PulseClass.run().then( result => {
       res.json(result);
+    });
+  });
+
+
+  v1.get('/', (req, res) => {
+    res.json({
+      'version': 1
     });
   });
 
