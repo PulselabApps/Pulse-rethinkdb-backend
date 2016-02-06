@@ -33,6 +33,7 @@ db( λ => {
 	// api router
 	app.use('/api', api());
 
+  app.use('/docs/v1', express.static(__dirname + '/doc'));
 
   var institutionsSocket = io.of('/sockets/institutions');
   institutionsSocket.on('connection', socket => {
