@@ -21,6 +21,12 @@ export default function() {
    * API endpoints that involve interacting with the root institution
    * object.
    */
+  
+  /**
+   * @apiDefine AuthenticationGroup Authentication endpoints
+   * 
+   * Everything involved with authentication
+   */
 
   /**
    * @api {GET} /api/v1/institutions Get All Institutions
@@ -36,6 +42,14 @@ export default function() {
     });
   });
 
+  /**
+   * @api {POST} /api/v1/studentLogin Login Current Student User
+   * @apiGroup AuthenticationGroup
+   * @apiDescription Tries to login in user, if it succeeds sends back a token
+   * @apiParam {String} email
+   * @apiParam {String} password
+   */
+  
   v1.post('/studentLogin', (req, res) => {
     console.log(req.body.email);
     Student.filter({'email': req.body.email, 'password': req.body.password}).run().then( result => {
