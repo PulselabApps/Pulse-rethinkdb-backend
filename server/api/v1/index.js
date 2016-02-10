@@ -5,6 +5,10 @@ import PulseClass from '../../models/PulseClass';
 import Teacher from '../../models/Teacher';
 import Student from '../../models/Student';
 import { thinky } from '../../db';
+import v1Inst from './institutionAPI';
+import v1Class from './pulseClassAPI';
+import jwt from 'jsonwebtoken';
+
 export default function() {
   var v1 = Router();
 
@@ -32,81 +36,52 @@ export default function() {
     });
   });
 
-  /**
-   * @api {GET} /api/v1/institution/:id Get Institution By ID
-   * @apiGroup InstitutionGroup
-   * @apiParam {String} id ObjectID of institution you want to
-   * retrieve.
-   * @apiName GetInstitutionByID
-   */
-  v1.get('/institution/:id', (req, res) => {
-    var id = req.params.id;
-    Institution.get(id).run().then( result => {
-      res.json(result);
+  v1.post('/studentLogin', (req, res) => {
+    console.log(req.body.email);
+    Student.filter({'email': req.body.email, 'password': req.body.password}).run().then( result => {
+        if(!result) { 
+            res.json({success: false, message: 'No user found'});
+        } else {
+            var user = result[0];
+            var token = jwt.sign(user, req.app.get('jsonTokenSecret'), {
+                expiresIn: 86400
+        	    });
+            res.json({
+                success: true,
+                token: token,
+                user: Object.assign({}, user, { password: ''})
+            });
+        }
     });
   });
-
-  /**
-   * @api {GET} /api/v1/institution/:id/classes Get Classes Of Institution
-   * @apiGroup InstitutionGroup
-   * @apiParam {String} id ObjectID of The Institution you want to retrieve classes from.
-   * @apiName GetInstitutionClasses
-   */
-  v1.get('/institution/:id/classes', (req, res) => {
-    var id = req.params.id;
-    Institution.get(id).run().then( institution => {
-      var instClasses = institution.classes;
-      console.log(instClasses);
-      PulseClass.getAll(r.args(instClasses)).run().then( result => {
-        res.json(result);
+  
+  v1.use((req, res, next) => {
+      var token = req.body.token || req.query.token || req.headers['x-access-token'];
+      
+      if(token) {
+      jwt.verify(token, req.app.get('jsonTokenSecret'), (err, decoded) => {
+        if (err) {
+          return res.json({
+            success: false,
+            code: 1003,
+            message: 'Failed to authentication token'
+          });
+        } else {
+          req.decoded = decoded;
+          next();
+        }
       });
-    });
-  });
-
-  /**
-   * @api {GET} /api/v1/institution/:id/students Get Students Of Institution
-   * @apiGroup InstitutionGroup
-   * @apiParam {String} id ObjectID of The Institution you want to retrieve Students from.
-   * @apiName GetInstitutionStudents
-   */
-  v1.get('/institution/:id/students', (req, res) => {
-    var id = req.params.id;
-    Institution.get(id).run().then( institution => {
-      var instStudents = institution.students;
-      console.log(instStudents);
-      Student.getAll(r.args(instStudents)).run().then( result => {
-        res.json(result.map( d => {
-          return Object.assign({}, d, { password: ''});
-        }));
+    } else {
+      return res.status(403).send({
+        success: false,
+        message: 'No token provided.'
       });
-    });
+    }
   });
 
-  /**
-   * @api {GET} /api/v1/institution/:id/teachers Get Teachers Of Institution
-   * @apiGroup InstitutionGroup
-   * @apiParam {String} id ObjectID of The Institution you want to retrieve Teachers from.
-   * @apiName GetInstitutionTeachers
-   */
-  v1.get('/institution/:id/teachers', (req, res) => {
-    var id = req.params.id;
-    Institution.get(id).run().then( institution => {
-      var instTeachers = institution.teachers;
-      console.log(instTeachers);
-      Teacher.getAll(r.args(instTeachers)).run().then( result => {
-        res.json(result.map( d => {
-          return Object.assign({}, d, { password: ''});
-        }));
-      });
-    });
-  });
+  v1.use('/institution', v1Inst());
 
-  v1.get('/classes', (req, res) => {
-    PulseClass.run().then( result => {
-      res.json(result);
-    });
-  });
-
+  v1.use('/class', v1Class());
 
   v1.get('/', (req, res) => {
     res.json({

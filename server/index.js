@@ -5,6 +5,7 @@ import socketio from 'socket.io';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import jwt from 'jsonwebtoken';
 import db from './db';
 import middleware from './middleware';
 import api from './api';
@@ -21,6 +22,8 @@ app.use(cors({
 app.use(bodyParser.json({
 	limit : '100kb'
 }));
+
+app.set('jsonTokenSecret', 'aAka$h1$APu$$y');
 
 app.use(morgan('dev'));
 
